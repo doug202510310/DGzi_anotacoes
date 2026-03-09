@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anotações</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="./img/DGzin.svg" alt="logo" class="logo">
+        </div>
+        <span class="marca"> 
+            <img src="./img/DGzin.svg" alt="logo" class="logo">
+        </span>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div id="indicador-armazenamento" title="Espaço utilizado no seu navegador">💾 Calculando...</div>
+            <button id="btn-exportar" class="btn-header" title="Exportar backup JSON">📥 Exportar</button>
+            <label id="btn-importar" class="btn-header" title="Importar backup JSON" style="display:inline-flex;align-items:center;gap:6px;">📤 Importar<input type="file" id="input-importar" accept=".json" class="escondido"></label>
+            <button id="btn-dark-mode" title="Modo Escuro">🌙</button>
+            <button id="btn-nova-coluna">+ Nova Coluna</button>
+        </div>
+    </header>
+    
+    <main id="quadro-kanban"></main>
+
+    <div id="tela-editor" class="escondido">
+        <aside class="sidebar-subtitulos">
+            <div class="sidebar-header">
+                <button id="btn-voltar-kanban">← Voltar</button>
+                <h2 id="titulo-card-atual">Nome do Card</h2>
+            </div>
+            
+            <div class="lista-subtitulos" id="lista-subtitulos"></div>
+
+            <button id="btn-novo-subtitulo">+ Novo Subtítulo</button>
+        </aside>
+
+        <main class="area-conteudo">
+            <div id="conteudo-vazio" class="mensagem-vazia">
+                <p>Selecione ou crie um subtítulo na lateral esquerda.</p>
+            </div>
+            
+            <div id="conteudo-ativo" class="escondido">
+                <div class="cabecalho-editor-principal">
+                    <h3 id="titulo-subtitulo-atual">Título</h3>
+                    <div id="area-eventos"></div> 
+                </div>
+                
+                <div class="ferramentas-conteudo">
+                    <button id="btn-add-texto" class="btn-ferramenta">📝 Texto</button>
+                    <button id="btn-add-checklist" class="btn-ferramenta">☑️ Lista</button>
+                    <button id="btn-add-imagem" class="btn-ferramenta">🖼️ Imagem</button>
+                    <button id="btn-add-arquivo" class="btn-ferramenta">📎 Arquivo</button>
+                    <button id="btn-add-evento" class="btn-ferramenta" style="background: #ffeaa7; border-color: #fdcb6e; color: #333;">📅 Evento</button>
+                    
+                    <input type="file" id="input-arquivo-escondido" class="escondido">
+                    <input type="file" id="input-imagem-escondida" class="escondido" accept="image/*">
+                </div>
+                
+                <div id="area-de-trabalho"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-card" class="modal-escondido">
+        <div class="modal-conteudo">
+            <h3>Novo Flashcard</h3>
+            <input type="text" id="input-titulo-card" placeholder="Ex: Faculdade, Mercado...">
+            <div class="secao-cor">
+                <label>Cor do Card:</label>
+                <input type="color" id="input-cor-card" value="#3498db"> 
+            </div>
+            <div class="modal-botoes">
+                <button id="btn-cancelar-card">Cancelar</button>
+                <button id="btn-salvar-card">Salvar Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal genérico de texto (substitui prompt) -->
+    <div id="modal-texto" class="modal-escondido">
+        <div class="modal-conteudo">
+            <h3 id="modal-texto-titulo">Digite</h3>
+            <input type="text" id="modal-texto-input" placeholder="">
+            <div class="modal-botoes">
+                <button id="btn-cancelar-modal-texto">Cancelar</button>
+                <button id="btn-confirmar-modal-texto" class="btn-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de evento com date picker -->
+    <div id="modal-evento" class="modal-escondido">
+        <div class="modal-conteudo">
+            <h3>📅 Novo Evento</h3>
+            <input type="text" id="modal-evento-titulo-input" placeholder="Título do evento">
+            <label style="font-size:0.9rem;color:var(--cor-texto);margin-bottom:-8px;">Data:</label>
+            <input type="date" id="modal-evento-data-input" style="padding:10px;border:1px solid var(--borda);border-radius:5px;background:var(--bg-fundo);color:var(--cor-texto);">
+            <div class="modal-botoes">
+                <button id="btn-cancelar-modal-evento">Cancelar</button>
+                <button id="btn-confirmar-modal-evento" class="btn-confirmar">Salvar Evento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de editar card -->
+    <div id="modal-editar-card" class="modal-escondido">
+        <div class="modal-conteudo">
+            <h3>✏️ Editar Card</h3>
+            <input type="text" id="input-editar-titulo-card" placeholder="Título do card">
+            <div class="secao-cor">
+                <label>Cor do Card:</label>
+                <input type="color" id="input-editar-cor-card" value="#3498db">
+            </div>
+            <div class="modal-botoes">
+                <button id="btn-cancelar-editar-card">Cancelar</button>
+                <button id="btn-salvar-editar-card" class="btn-confirmar">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
